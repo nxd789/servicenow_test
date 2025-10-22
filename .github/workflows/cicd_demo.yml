@@ -11,7 +11,7 @@ jobs:
     steps:
     - name: ServiceNow DevOps Change Automation
       uses: ServiceNow/servicenow-devops-change@v6.1.0
-      id: create
+      # id: create
       with:
         devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
         instance-url: ${{ secrets.SN_INSTANCE_URL }}
@@ -21,12 +21,10 @@ jobs:
         change-request: '{"setCloseCode":"true", "autoCloseChange":true, "attributes": {"short_description":"Automated Software Deployment","description":"Automated Software Deployment.","assignment_group":"a715cd759f2002002920bde8132e7018","implementation_plan":"Software update is tested and results can be found in Test Summaries Tab; When the change is approved the implementation happens automated by the CICD pipeline within the change planned start and end time window.","backout_plan":"When software fails in production, the previous software release will be re-deployed.","test_plan":"Testing if the software was successfully deployed"}}'
         interval: "100"
         timeout: "3600"
-        changeCreationTimeOut: "3600"
-        abortOnChangeCreationFailure: true
-        abortOnChangeStepTimeout: true
+        deployment-gate: '{"environment": "prod", "jobName": "Deploy"}'
 
-    - name: Output of Change Creation
-      run: echo "change-request-number = ${{ steps.create.outputs.change-request-number }} and change-request-sys-id = ${{ steps.create.outputs.change-request-sys-id }} " >> $GITHUB_OUTPUT
+    # - name: Output of Change Creation
+    #   run: echo "change-request-number = ${{ steps.create.outputs.change-request-number }} and change-request-sys-id = ${{ steps.create.outputs.change-request-sys-id }} " >> $GITHUB_OUTPUT
 
   deploy:
     name: Deploy
