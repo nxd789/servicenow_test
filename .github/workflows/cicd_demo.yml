@@ -6,13 +6,13 @@ on:
 jobs:
 
   changeApproval:
-    name: ServiceNow Change Approval
+    name: "ServiceNow Change Approval"
     runs-on: ubuntu-latest
 
     steps:
     - name: ServiceNow DevOps Change Automation
       uses: ServiceNow/servicenow-devops-change@v6.1.0
-      id: create
+      # id: create
       with:
         devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
         instance-url: ${{ secrets.SN_INSTANCE_URL }}
