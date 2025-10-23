@@ -13,12 +13,11 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest # sw-ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
+    steps: 
       - name: Get Ticket Number
-        id: get_ticket_num
+        id: get_ticket_num ## if [[ "$branch_name" =~ (HR[C]?|INC|RITM|SCTASK)\d+ ]]
         run: |
           branch_name = ${{ github.ref_name }}
-          ## if [[ "$branch_name" =~ (HR[C]?|INC|RITM|SCTASK)\d+ ]]
           ticket_num = $(grep -oP '(HR[C]?|INC|RITM|SCTASK)\d+' $branch_name)
           echo "Extracted ticket_num is $ticket_num"
 
