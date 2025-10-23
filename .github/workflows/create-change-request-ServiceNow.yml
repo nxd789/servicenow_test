@@ -14,11 +14,12 @@ jobs:
     runs-on: ubuntu-latest # sw-ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps: 
-      - name: Get Ticket Number
+      - name: Get Ticket Number From Branch Name
         id: get_ticket_num
         run: |
           branch_name=${{ github.ref_name }}
-          shopt -s nocasematch # Enable case-insensitive matching
+
+          shopt -s nocasematch  # Enable case-insensitive matching
           if [[ "$branch_name" =~ (HR[C]?|INC|RITM|SCTASK)[0-9]+ ]]; then
             ticket_num="${BASH_REMATCH[0]}"
           else
@@ -26,8 +27,7 @@ jobs:
           fi
           echo "ticket_num=$ticket_num" >> $GITHUB_OUTPUT
 
-      - name: Prepare Message
-        id: prepare_msg
+      - name: Prepare Work Notes Message
         run: |
           echo "MESSAGE<<EOF" >> $GITHUB_ENV
           echo "GitHub branch has been created." >> $GITHUB_ENV
@@ -37,35 +37,37 @@ jobs:
           echo "\tTicket number: ${{ steps.get_ticket_num.outputs.ticket_num }}" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Test
-        run: echo "TEST \ $MESSAGE"
+      # Get some details of the ticket (e.g., requester on the HRC case) and copy them to the CHG record
 
-      # - name: Create
-      #   # For custom action based change, remove or disable the 'deployment-gate' configuration and the 'deploy' step. Ensure to update to the latest version of the custom action, for e.g. ServiceNow/servicenow-devops-change@v5.1.0
-      #   uses: ServiceNow/servicenow-devops-change@v6.1.0
-      #   with:
-      #     # Devops Integration Token
-      #     devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
-      #     # ServiceNow Instance URL
-      #     instance-url: ${{ secrets.SN_INSTANCE_URL }}
-      #     # Orchestration Tool Id
-      #     tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
-      #     # GitHub Context
-      #     context-github: ${{ toJSON(github) }}
-      #     # Display Name of the Job
-      #     job-name: Create a ServiceNow Change Request
-      #     # change-request: snDevOpsChange
-      #     # Unsupported fields are: risk, impact, and risk_impact_analysis
-      #     change-request: '{
-      #       "short_description": ${{ github.ref_name }},
-      #       "description": "Automatically created by GitHub Action in response to a new branch being created. TODO: Associate branch to service or something",
-      #       "work_notes": 
-      #         "GitHub Branch Created.\n"
-      #       }'
-      #     change-request: '{"attributes":{"priority": "2","comments": "This is a sample pipeline script to be added in your change step","work_notes": "Update this to work_notes","start_date": "2023-09-07 11:59:59","end_date": "2023-09-09 11:59:59"}}'
-      #     # You can specify the requested_by attribute either with name or sys_id. Example: "requested_by":{"name": "Test User"} or "requested_by": "62826bf03710200044e0bfc8bcbe5df1"
-      #     # You can specify the assignment_group attribute either with name or sys_id. Example: "assignment_group":{"name": "Change Approval Team"} or "assignment_group": "5f721d93c0a8010e015533746de18bf9"
-      #     # start_date: This is the planned start date
-      #     # end_date: This is the planned end date
-      #     # For deployment gate based change, uncomment the 'deployment-gate' configuration and the 'deploy' step 
-      #     # deployment-gate: '{"environment": "deploy-gates-demo", "jobName": "Deploy"}'
+      - name: Create Change Request in ServiceNow
+        # For custom action based change, remove or disable the 'deployment-gate' configuration and the 'deploy' step. Ensure to update to the latest version of the custom action, for e.g. ServiceNow/servicenow-devops-change@v5.1.0
+        uses: ServiceNow/servicenow-devops-change@v6.1.0
+        with:
+          # Devops Integration Token
+          devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
+          # ServiceNow Instance URL
+          instance-url: ${{ secrets.SN_INSTANCE_URL }}
+          # Orchestration Tool Id
+          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+          # GitHub Context
+          context-github: ${{ toJSON(github) }}
+          # Display Name of the Job
+          job-name: Create a ServiceNow Change Request # Must match the job name containing these steps
+          # change-request: snDevOpsChange
+          # Unsupported fields are: risk, impact, and risk_impact_analysis
+          # change-request: '{
+          #   "short_description": ${{ github.ref_name }},
+          #   "description": "Automatically created by GitHub Action in response to a new branch being created. TODO: Associate branch to service or something",
+          #   "work_notes": "$MESSAGE"
+          #   }'
+          change-request: '{
+            "short_description": ${{ github.ref_name }},
+            "description": "Automatically created by GitHub Action in response to a new branch being created. TODO: Associate branch to service or something",
+            "work_notes": "$MESSAGE"
+            }'
+          # You can specify the requested_by attribute either with name or sys_id. Example: "requested_by":{"name": "Test User"} or "requested_by": "62826bf03710200044e0bfc8bcbe5df1"
+          # You can specify the assignment_group attribute either with name or sys_id. Example: "assignment_group":{"name": "Change Approval Team"} or "assignment_group": "5f721d93c0a8010e015533746de18bf9"
+          # start_date: This is the planned start date
+          # end_date: This is the planned end date
+          # For deployment gate based change, uncomment the 'deployment-gate' configuration and the 'deploy' step 
+          # deployment-gate: '{"environment": "deploy-gates-demo", "jobName": "Deploy"}'
