@@ -37,7 +37,7 @@ jobs:
           Ticket number: $TICKET_NUM"
 
           #content=$(echo "$content" | tr '\n' '\\n')
-          content=$(echo "$content" | sed "s/\\n/\n/g")
+          content="${content//$'\n'/'\\n'}"
 
           echo "message<<EOF" >> $GITHUB_OUTPUT
           echo "$content" >> $GITHUB_OUTPUT
