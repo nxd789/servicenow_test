@@ -19,7 +19,7 @@ jobs:
         run: |
           branch_name=${{ github.ref_name }}
           shopt -s nocasematch # Enable case-insensitive matching
-          if [[ "$branch_name" =~ (HR[C]?|INC|RITM|SCTASK)\d+ ]]; then
+          if [[ "$branch_name" =~ (HR[C]?|INC|RITM|SCTASK)[0-9]+ ]]; then
             ticket_num="${BASH_REMATCH[0]}"
           else
             ticket_num="N/A"
