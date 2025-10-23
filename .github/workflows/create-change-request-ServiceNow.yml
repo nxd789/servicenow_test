@@ -33,7 +33,8 @@ jobs:
           echo "\tRepository: ${{ github.event.repository.name }}" >> $GITHUB_ENV
           echo "\tBranch name: ${{ github.ref_name }}" >> $GITHUB_ENV
           echo "\tTriggered by: ${{ github.actor }}" >> $GITHUB_ENV
-          echo "\tTicket number: ${{ steps.get_ticket_num.outputs.ticket_num }}"
+          echo "\tTicket number: ${{ steps.get_ticket_num.outputs.ticket_num }}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Test
         run: echo "TEST \ $MESSAGE"
