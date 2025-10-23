@@ -61,7 +61,7 @@ jobs:
           #   "work_notes": "$MESSAGE"
           #   }'
           change-request: '{
-            "short_description": ${{ github.ref_name }},
+            "short_description": "${{ github.ref_name }}",
             "description": "Automatically created by GitHub Action in response to a new branch being created. TODO: Associate branch to service or something",
             "work_notes": "$MESSAGE"
             }'
