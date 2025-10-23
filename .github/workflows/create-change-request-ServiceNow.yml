@@ -36,7 +36,8 @@ jobs:
           \tTriggered by: ${{ github.actor }}
           \tTicket number: $TICKET_NUM"
 
-          content=$(echo "$content" | sed 's/$/\\n/') # Replace end of line with \n
+          content="${content//$'\\n'/, }"
+          #content=$(echo "$content" | sed 's/$/\\n/') # Replace end of line with \n
 
           echo "message<<EOF" >> $GITHUB_OUTPUT
           echo "$content" >> $GITHUB_OUTPUT
