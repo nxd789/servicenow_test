@@ -19,7 +19,11 @@ jobs:
         run: |
           branch_name=${{ github.ref_name }}
           ticket_num=$(echo "$branch_name" | grep -oP "(HR[C]?|INC|RITM|SCTASK)\d+")
-          #echo "Extracted ticket_num is $ticket_num" >> $GITHUB_OUTPUT
+          if [[ "$branch_name" =~ (HR[C]?|INC|RITM|SCTASK)\d+ ]]; then
+            echo "ticket_num=${BASH_REMATCH[0]}" >> $GITHUB_OUTPUT
+          else
+            echo "ticket_num=" >> $GITHUB_OUTPUT
+          fi
 
       - name: Prepare Message
         id: prepare_msg
@@ -29,7 +33,7 @@ jobs:
           echo "\tRepository: ${{ github.event.repository.name }}" >> $GITHUB_ENV
           echo "\tBranch name: ${{ github.ref_name }}" >> $GITHUB_ENV
           echo "\tTriggered by: ${{ github.actor }}" >> $GITHUB_ENV
-          echo "\tTicket number: "
+          echo "\tTicket number: ${{ steps.get_ticket_num.outputs.ticket_num }}"
 
       - name: Test
         run: echo "TEST \ $MESSAGE"
