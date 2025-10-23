@@ -15,14 +15,14 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps: 
       - name: Get Ticket Number
-        id: get_ticket_num ## if [[ "$branch_name" =~ (HR[C]?|INC|RITM|SCTASK)\d+ ]]
+        id: get_ticket_num
         run: |
           branch_name=${{ github.ref_name }}
           shopt -s nocasematch # Enable case-insensitive matching
           if [[ "$branch_name" =~ (HR[C]?|INC|RITM|SCTASK)\d+ ]]; then
             ticket_num="${BASH_REMATCH[0]}"
           else
-            ticket_num=""
+            ticket_num="N/A"
           fi
           echo "ticket_num=$ticket_num" >> $GITHUB_OUTPUT
 
