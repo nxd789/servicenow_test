@@ -19,10 +19,11 @@ jobs:
         run: |
           branch_name=${{ github.ref_name }}
           if [[ "$branch_name" =~ (HR[C]?|INC|RITM|SCTASK)\d+ ]]; then
-            echo "ticket_num=${BASH_REMATCH[0]}" >> $GITHUB_OUTPUT
+            ticket_num="${BASH_REMATCH[0]}"
           else
-            echo "ticket_num=" >> $GITHUB_OUTPUT
+            ticket_num=""
           fi
+          echo "ticket_num=$ticket_num" >> $GITHUB_OUTPUT
 
       - name: Prepare Message
         id: prepare_msg
