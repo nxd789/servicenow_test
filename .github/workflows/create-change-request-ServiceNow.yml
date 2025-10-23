@@ -36,7 +36,7 @@ jobs:
           Triggered by: ${{ github.actor }}
           Ticket number: $TICKET_NUM"
 
-          content=$(echo "$content" | tr '\n' '+')
+          content=$(echo "$content" | tr '\n' '\\n')
           #content=$(echo "$content" | awk '{printf "%s\\n", $0}' | sed "s/\\n$//'")
           #content=$(echo "$content" | sed 's/$/\\n/') # Replace end of line with \n
 
