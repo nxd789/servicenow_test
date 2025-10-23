@@ -17,8 +17,8 @@ jobs:
       - name: Get Ticket Number
         id: get_ticket_num ## if [[ "$branch_name" =~ (HR[C]?|INC|RITM|SCTASK)\d+ ]]
         run: |
-          branch_name = ${{ github.ref_name }}
-          ticket_num = $(grep -oP '(HR[C]?|INC|RITM|SCTASK)\d+' $branch_name)
+          branch_name=${{ github.ref_name }}
+          ticket_num=$(grep -oP '(HR[C]?|INC|RITM|SCTASK)\d+' $branch_name)
           echo "Extracted ticket_num is $ticket_num"
 
       - name: Prepare Message
