@@ -25,18 +25,28 @@ jobs:
           else
             ticket_num="N/A"
           fi
-          echo "ticket_num=$ticket_num" >> $GITHUB_ENV
+          echo "TICKET_NUM=$ticket_num" >> $GITHUB_ENV
 
       - name: Prepare Work Notes Message
         id: prepare_work_notes_msg
         run: |
+          MESSAGE="GitHub branch has been created.
+          \tRepository: ${{ github.event.repository.name }}
+          \tBranch name: ${{ github.ref_name }}
+          \tTriggered by: ${{ github.actor }}
+          \tTicket number: $TICKET_NUM"
+
           echo "message<<EOF" >> $GITHUB_OUTPUT
-          echo "GitHub branch has been created." >> $GITHUB_OUTPUT
-          echo "\tRepository: ${{ github.event.repository.name }}" >> $GITHUB_OUTPUT
-          echo "\tBranch name: ${{ github.ref_name }}" >> $GITHUB_OUTPUT
-          echo "\tTriggered by: ${{ github.actor }}" >> $GITHUB_OUTPUT
-          echo "\tTicket number: $ticket_num" >> $GITHUB_OUTPUT
+          echo "$MESSAGE" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+          
+          # echo "message<<EOF" >> $GITHUB_OUTPUT
+          # echo "GitHub branch has been created." >> $GITHUB_OUTPUT
+          # echo "\tRepository: ${{ github.event.repository.name }}" >> $GITHUB_OUTPUT
+          # echo "\tBranch name: ${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          # echo "\tTriggered by: ${{ github.actor }}" >> $GITHUB_OUTPUT
+          # echo "\tTicket number: $TICKET_NUM" >> $GITHUB_OUTPUT
+          # echo "EOF" >> $GITHUB_OUTPUT
 
   create:
     name: Create a ServiceNow Change Request
