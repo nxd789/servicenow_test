@@ -88,10 +88,12 @@ jobs:
           #   "description": "Automatically created by GitHub Action in response to a new branch being created. TODO: Associate branch to service or something",
           #   "work_notes": "$MESSAGE"
           #   }'
-          change-request: '{"attributes":{
-            "short_description": "${{ github.ref_name }}",
-            "description": "Automatically created by GitHub Action in response to a new branch being created. TODO: Associate branch to service or something",
-            "work_notes": "$MESSAGE"
+          change-request: '{
+            "attributes":{
+              "short_description": "${{ github.ref_name }}",
+              "description": "Automatically created by GitHub Action in response to a new branch being created. TODO: Associate branch to service or something",
+              "work_notes": "$MESSAGE"
+              }
             }'
           # You can specify the requested_by attribute either with name or sys_id. Example: "requested_by":{"name": "Test User"} or "requested_by": "62826bf03710200044e0bfc8bcbe5df1"
           # You can specify the assignment_group attribute either with name or sys_id. Example: "assignment_group":{"name": "Change Approval Team"} or "assignment_group": "5f721d93c0a8010e015533746de18bf9"
