@@ -16,4 +16,4 @@ jobs:
     steps:
       # Runs a set of commands using the runners shell
       - name: Log the new branch name
-        run: echo "Branch \"${{ github.ref_name }}"\" was just created."
+        run: echo "Branch \"${{ github.ref_name }}\" was just created."
