@@ -18,7 +18,8 @@ jobs:
         id: get_ticket_num ## if [[ "$branch_name" =~ (HR[C]?|INC|RITM|SCTASK)\d+ ]]
         run: |
           branch_name=${{ github.ref_name }}
-          if [[ "$branch_name" =~ /(HR[C]?|INC|RITM|SCTASK)\d+/i ]]; then
+          shopt -s nocasematch # Enable case-insensitive matching
+          if [[ "$branch_name" =~ (HR[C]?|INC|RITM|SCTASK)\d+ ]]; then
             ticket_num="${BASH_REMATCH[0]}"
           else
             ticket_num=""
