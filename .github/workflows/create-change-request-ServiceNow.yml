@@ -11,6 +11,8 @@ jobs:
   initialize:
     name: Initialize Values
     runs-on: ubuntu-latest
+    outputs:
+      message: ${{ steps.prepare_work_notes_msg.outputs.message }}
     steps:
       - name: Get Ticket Number From Branch Name
         id: get_ticket_num
@@ -23,17 +25,18 @@ jobs:
           else
             ticket_num="N/A"
           fi
-          echo "ticket_num=$ticket_num" >> $GITHUB_OUTPUT
+          echo "ticket_num=$ticket_num" >> $GITHUB_ENV
 
       - name: Prepare Work Notes Message
+        id: prepare_work_notes_msg
         run: |
-          echo "MESSAGE<<EOF" >> $GITHUB_ENV
-          echo "GitHub branch has been created." >> $GITHUB_ENV
-          echo "\tRepository: ${{ github.event.repository.name }}" >> $GITHUB_ENV
-          echo "\tBranch name: ${{ github.ref_name }}" >> $GITHUB_ENV
-          echo "\tTriggered by: ${{ github.actor }}" >> $GITHUB_ENV
-          echo "\tTicket number: ${{ steps.get_ticket_num.outputs.ticket_num }}" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          echo "message<<EOF" >> $GITHUB_OUTPUT
+          echo "GitHub branch has been created." >> $GITHUB_OUTPUT
+          echo "\tRepository: ${{ github.event.repository.name }}" >> $GITHUB_OUTPUT
+          echo "\tBranch name: ${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          echo "\tTriggered by: ${{ github.actor }}" >> $GITHUB_OUTPUT
+          echo "\tTicket number: $ticket_num" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
   create:
     name: Create a ServiceNow Change Request
@@ -92,7 +95,7 @@ jobs:
             "attributes":{
               "short_description": "${{ github.ref_name }}",
               "description": "Automatically created by GitHub Action in response to a new branch being created. TODO: Associate branch to service or something",
-              "work_notes": "$MESSAGE"
+              "work_notes": "${{ needs.initialize.outputs.message }}"
               }
             }'
           # You can specify the requested_by attribute either with name or sys_id. Example: "requested_by":{"name": "Test User"} or "requested_by": "62826bf03710200044e0bfc8bcbe5df1"
