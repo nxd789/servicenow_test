@@ -30,14 +30,14 @@ jobs:
       - name: Prepare Work Notes Message
         id: prepare_work_notes_msg
         run: |
-          content="GitHub branch has been created.
+          content='GitHub branch has been created.
           Repository: ${{ github.event.repository.name }}
           Branch name: ${{ github.ref_name }}
           Triggered by: ${{ github.actor }}
-          Ticket number: $TICKET_NUM"
+          Ticket number: $TICKET_NUM'
 
           #content=$(echo "$content" | tr '\n' '\\n')
-          content="${content//$'\n'/'\\n'}"
+          #content="${content//$'\n'/'\\n'}"
 
           echo "message<<EOF" >> $GITHUB_OUTPUT
           echo "$content" >> $GITHUB_OUTPUT
