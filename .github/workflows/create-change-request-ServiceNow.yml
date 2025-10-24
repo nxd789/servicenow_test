@@ -30,23 +30,22 @@ jobs:
       - name: Prepare Work Notes Message
         id: prepare_work_notes_msg
         run: |
+          # content="[code]<b>GitHub branch has been created.</b>[/code]\n"
+          # content+="* Repository: ${{ github.event.repository.name }}\n"
+          # content+="* Branch name: ${{ github.ref_name }}\n" # TODO: Make it evenly spaces between label and value
+          # content+="* Triggered by: ${{ github.actor }}\n"
+          # content+="* Ticket number: $TICKET_NUM"
+
           content="[code]<b>GitHub branch has been created.</b>[/code]\n"
-          content+="* Repository: ${{ github.event.repository.name }}\n"
-          content+="* Branch name: ${{ github.ref_name }}\n" # TODO: Make it evenly spaces between label and value
-          content+="* Triggered by: ${{ github.actor }}\n"
-          content+="* Ticket number: $TICKET_NUM"
+          content+=$(printf "* %-20s- %s\n" "Repository" "${{ github.event.repository.name }}")
+          content+=$(printf "* %-20s- %s\n" "Branch name" "${{ github.ref_name }}") 
+          content+=$(printf "* %-20s- %s\n" "Triggered by" "${{ github.actor }}")
+          content+=$(printf "* %-20s- %s\n" "Ticket number" "$TICKET_NUM")
 
           echo "message<<EOF" >> $GITHUB_OUTPUT
           echo "$content" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-          # echo "message<<EOF" >> $GITHUB_OUTPUT
-          # echo "GitHub branch has been created." >> $GITHUB_OUTPUT
-          # echo "\tRepository: ${{ github.event.repository.name }}" >> $GITHUB_OUTPUT
-          # echo "\tBranch name: ${{ github.ref_name }}" >> $GITHUB_OUTPUT
-          # echo "\tTriggered by: ${{ github.actor }}" >> $GITHUB_OUTPUT
-          # echo "\tTicket number: $TICKET_NUM" >> $GITHUB_OUTPUT
-          # echo "EOF" >> $GITHUB_OUTPUT
 
   create:
     name: Create a ServiceNow Change Request
