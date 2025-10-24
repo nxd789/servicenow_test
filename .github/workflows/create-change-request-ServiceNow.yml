@@ -15,6 +15,8 @@ jobs:
     outputs:
       ticket_num: ${{ steps.get_ticket_num.outputs.ticket_num }}
       branch_name: ${{ steps.get_ticket_num.outputs.branch_name }}
+      #pr_number: ${{ steps.get_pr_details.outputs.pr_number }}
+      #pr_link: ${{ steps.get_pr_details.outputs.pr_link }}
       message: ${{ steps.prepare_work_notes_msg.outputs.message }}
     steps:
       - name: Get Ticket Number From Branch Name
@@ -28,10 +30,15 @@ jobs:
           else
             ticket_num="N/A"
           fi
-          # echo "TICKET_NUM=$ticket_num" >> $GITHUB_ENV
-          # echo "BRANCH_NAME=$branch_name" >> $GITHUB_ENV
           echo "ticket_num=$ticket_num" >> $GITHUB_OUTPUT
           echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
+
+      - name: Get PR Details
+        id: get_pr_details
+        run: |
+          pr_number=${{ github.event.number }}
+          echo "pr_number=$pr_number" >> $GITHUB_ENV
+          echo "pr_link=${{ github.server_url }}/${{ github.repository }}/pull/$pr_number" >> $GITHUB_ENV
 
       - name: Prepare Work Notes Message
         id: prepare_work_notes_msg
@@ -44,16 +51,14 @@ jobs:
           )
           values=(
             "${{ github.event.repository.name }}"
-            #"$BRANCH_NAME"
             "${{ steps.get_ticket_num.outputs.branch_name }}"
             "${{ github.actor }}"
             "${{ steps.get_ticket_num.outputs.ticket_num }}"
-            #"$TICKET_NUM"
           )
 
           # Format message
           content="[code]"
-          content+="<b>A pull request has been made.</b><br>"
+          content+="<b>A pull request (#$pr_number) has been made.$pr_link</b><br>"
           content+="<pre>"    # Read extra spaces as-is
 
           for idx in "${!labels[@]}"; do
