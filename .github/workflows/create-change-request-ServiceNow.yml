@@ -49,21 +49,28 @@ jobs:
           # echo "$content" >> $GITHUB_OUTPUT
           # echo "EOF" >> $GITHUB_OUTPUT
 
-          # Populate a named associative array (dictionary)
-          declare -A info
-
-          info["Repository"]="${{ github.event.repository.name }}"
-          info["Branch name"]="${{ github.ref_name }}"
-          info["Triggered by"]="${{ github.actor }}"
-          info["Ticket number"]="$TICKET_NUM"
+          labels=(
+            "Repository", 
+            "Branch name", 
+            "Triggered by", 
+            "Ticket number"
+          )
+          values=(
+            "${{ github.event.repository.name }}",
+            "${{ github.ref_name }}",
+            "${{ github.actor }}",
+            "$TICKET_NUM"
+          )
 
           # Format message
           content="[code]"
-          content+="<b>GitHub branch has been created.</b>\n"
+          content+="<b>GitHub branch has been created.</b><br>"
           content+="<pre>"    # Read extra spaces as-is
 
-          for key in "${!info[@]}"; do
-            content+=$(printf "* %-15s- %s\n" "$key" "${info[$key]}")
+          for idx in "${!labels[@]}"; do
+            label="${names[$idx]}"
+            value="${age[$idx]}"
+            content+=$(printf "%-15s- %s<br>" "$label" "$value")
           done
 
           content+="</pre>[/code]"
