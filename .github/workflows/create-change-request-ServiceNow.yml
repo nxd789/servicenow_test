@@ -2,7 +2,8 @@ name: Create DevOps Change Request in ServiceNow
 
 # Controls when the workflow will run
 on:
-  push:
+  pull_request:
+    types: [opened] # synchronize, reopened
     branches:
       - main
 
