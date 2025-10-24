@@ -30,8 +30,8 @@ jobs:
           fi
           # echo "TICKET_NUM=$ticket_num" >> $GITHUB_ENV
           # echo "BRANCH_NAME=$branch_name" >> $GITHUB_ENV
-          echo "ticket_num=ticket_num" >> $GITHUB_OUTPUT
-          echo "branch_name=branch_name" >> $GITHUB_OUTPUT
+          echo "ticket_num=$ticket_num" >> $GITHUB_OUTPUT
+          echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
 
       - name: Prepare Work Notes Message
         id: prepare_work_notes_msg
