@@ -68,8 +68,8 @@ jobs:
           content+="<pre>"    # Read extra spaces as-is
 
           for idx in "${!labels[@]}"; do
-            label="${names[$idx]}"
-            value="${age[$idx]}"
+            label="${labels[$idx]}"
+            value="${values[$idx]}"
             content+=$(printf "%-15s- %s<br>" "$label" "$value")
           done
 
