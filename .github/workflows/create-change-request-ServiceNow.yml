@@ -60,7 +60,7 @@ jobs:
           content="[code]"
 
           url="<a href=$pr_link>"
-          content+="<b>A pull request (<a href=\"$pr_link\" target=\"_blank\">#$pr_number</a>) has been made.</b><br>"
+          content+="<b>A pull request (<a href=\\"$pr_link\\" target=\\"_blank\\">#$pr_number</a>) has been made.</b><br>"
           content+="<pre>"    # Read extra spaces as-is
 
           for idx in "${!labels[@]}"; do
