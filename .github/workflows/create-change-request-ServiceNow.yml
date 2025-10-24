@@ -58,7 +58,9 @@ jobs:
 
           # Format message
           content="[code]"
-          content+="<b>A pull request (#$pr_number) has been made.$pr_link</b><br>"
+
+          url="<a href=$pr_link>"
+          content+="<b>A pull request (#<a href=$pr_link>$pr_number</a>) has been made.</b><br>"
           content+="<pre>"    # Read extra spaces as-is
 
           for idx in "${!labels[@]}"; do
