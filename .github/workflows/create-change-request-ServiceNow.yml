@@ -38,7 +38,7 @@ jobs:
             "Ticket number"
           )
           values=(
-            "${{ github.event.repository.name }}""
+            "${{ github.event.repository.name }}"
             "${{ github.ref_name }}"
             "${{ github.actor }}"
             "$TICKET_NUM"
