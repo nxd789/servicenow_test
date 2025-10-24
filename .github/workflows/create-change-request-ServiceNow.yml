@@ -39,7 +39,7 @@ jobs:
           )
           values=(
             "${{ github.event.repository.name }}"
-            "${{ github.ref_name }}"
+            "${{ github.head_ref }}"
             "${{ github.actor }}"
             "$TICKET_NUM"
           )
