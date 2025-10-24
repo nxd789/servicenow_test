@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       ticket_num: ${{ steps.get_ticket_num.outputs.ticket_num }}
-      branch_name: ${{ steps.prepare_work_notes_msg.outputs.branch_name }}
+      branch_name: ${{ steps.get_ticket_num.outputs.branch_name }}
       message: ${{ steps.prepare_work_notes_msg.outputs.message }}
     steps:
       - name: Get Ticket Number From Branch Name
