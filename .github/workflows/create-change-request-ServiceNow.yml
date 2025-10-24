@@ -2,9 +2,9 @@ name: Create DevOps Change Request in ServiceNow
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on branch creation
-  create
-  #workflow_dispatch:
+  push:
+    branches:
+      - main
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -30,41 +30,22 @@ jobs:
       - name: Prepare Work Notes Message
         id: prepare_work_notes_msg
         run: |
-          # content="[code]<b>GitHub branch has been created.</b>[/code]\n"
-          # content+="* Repository: ${{ github.event.repository.name }}\n"
-          # content+="* Branch name: ${{ github.ref_name }}\n" # TODO: Make it evenly spaces between label and value
-          # content+="* Triggered by: ${{ github.actor }}\n"
-          # content+="* Ticket number: $TICKET_NUM"
-
-          # content="[code]"
-          # content+="<b>GitHub branch has been created.</b>\n"
-          # content+="<pre>"    # Read extra spaces as-is
-          # content+=$(printf "* %-15s- %s\n" "Repository" "${{ github.event.repository.name }}")
-          # content+=$(printf "* %-15s- %s\n" "Branch name" "${{ github.ref_name }}") 
-          # content+=$(printf "* %-15s- %s\n" "Triggered by" "${{ github.actor }}")
-          # content+=$(printf "* %-15s- %s\n" "Ticket number" "$TICKET_NUM")
-          # content+="</pre>[/code]"
-
-          # echo "message<<EOF" >> $GITHUB_OUTPUT
-          # echo "$content" >> $GITHUB_OUTPUT
-          # echo "EOF" >> $GITHUB_OUTPUT
-
           labels=(
-            "Repository", 
-            "Branch name", 
-            "Triggered by", 
+            "Repository"
+            "Branch name"
+            "Triggered by"
             "Ticket number"
           )
           values=(
-            "${{ github.event.repository.name }}",
-            "${{ github.ref_name }}",
-            "${{ github.actor }}",
+            "${{ github.event.repository.name }}""
+            "${{ github.ref_name }}"
+            "${{ github.actor }}"
             "$TICKET_NUM"
           )
 
           # Format message
           content="[code]"
-          content+="<b>GitHub branch has been created.</b><br>"
+          content+="<b>A pull request has been made.</b><br>"
           content+="<pre>"    # Read extra spaces as-is
 
           for idx in "${!labels[@]}"; do
@@ -79,8 +60,6 @@ jobs:
           echo "$content" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           
-
-
   create:
     name: Create a ServiceNow Change Request
     needs: initialize
@@ -88,30 +67,7 @@ jobs:
     runs-on: ubuntu-latest # sw-ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps: 
-      # - name: Get Ticket Number From Branch Name
-      #   id: get_ticket_num
-      #   run: |
-      #     branch_name=${{ github.ref_name }}
-
-      #     shopt -s nocasematch  # Enable case-insensitive matching
-      #     if [[ "$branch_name" =~ (HR[C]?|INC|RITM|SCTASK)[0-9]+ ]]; then
-      #       ticket_num="${BASH_REMATCH[0]}"
-      #     else
-      #       ticket_num="N/A"
-      #     fi
-      #     echo "ticket_num=$ticket_num" >> $GITHUB_OUTPUT
-
-      # - name: Prepare Work Notes Message
-      #   run: |
-      #     echo "MESSAGE<<EOF" >> $GITHUB_ENV
-      #     echo "GitHub branch has been created." >> $GITHUB_ENV
-      #     echo "\tRepository: ${{ github.event.repository.name }}" >> $GITHUB_ENV
-      #     echo "\tBranch name: ${{ github.ref_name }}" >> $GITHUB_ENV
-      #     echo "\tTriggered by: ${{ github.actor }}" >> $GITHUB_ENV
-      #     echo "\tTicket number: ${{ steps.get_ticket_num.outputs.ticket_num }}" >> $GITHUB_ENV
-      #     echo "EOF" >> $GITHUB_ENV
-
-      # Get some details of the ticket (e.g., requester on the HRC case) and copy them to the CHG record
+      # TODO: Get some details of the ticket (e.g., requester on the HRC case) and copy them to the CHG record
 
       - name: Create Change Request in ServiceNow
         # For custom action based change, remove or disable the 'deployment-gate' configuration and the 'deploy' step. Ensure to update to the latest version of the custom action, for e.g. ServiceNow/servicenow-devops-change@v5.1.0
@@ -129,11 +85,6 @@ jobs:
           job-name: Create a ServiceNow Change Request # Must match the job name containing these steps
           # change-request: snDevOpsChange
           # Unsupported fields are: risk, impact, and risk_impact_analysis
-          # change-request: '{
-          #   "short_description": ${{ github.ref_name }},
-          #   "description": "Automatically created by GitHub Action in response to a new branch being created. TODO: Associate branch to service or something",
-          #   "work_notes": "$MESSAGE"
-          #   }'
           change-request: '{
             "attributes":{
               "short_description": "${{ github.ref_name }}",
