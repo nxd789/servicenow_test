@@ -43,7 +43,7 @@ jobs:
           content+=$(printf "* %-15s- %s\n" "Branch name" "${{ github.ref_name }}") 
           content+=$(printf "* %-15s- %s\n" "Triggered by" "${{ github.actor }}")
           content+=$(printf "* %-15s- %s\n" "Ticket number" "$TICKET_NUM")
-          content="</pre>[/code]"
+          content+="</pre>[/code]"
 
           echo "message<<EOF" >> $GITHUB_OUTPUT
           echo "$content" >> $GITHUB_OUTPUT
