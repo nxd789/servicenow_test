@@ -98,7 +98,6 @@ jobs:
           context-github: ${{ toJSON(github) }}
           # Display Name of the Job
           job-name: Create a ServiceNow Change Request # Must match the job name containing these steps
-          # change-request: snDevOpsChange
           # Unsupported fields are: risk, impact, and risk_impact_analysis
           change-request: '{
             "attributes":{
@@ -112,4 +111,4 @@ jobs:
           # start_date: This is the planned start date
           # end_date: This is the planned end date
           # For deployment gate based change, uncomment the 'deployment-gate' configuration and the 'deploy' step 
-          # deployment-gate: '{"environment": "deploy-gates-demo", "jobName": "Deploy"}'
+          deployment-gate: '{"environment": "deployment_gate_sn_test", "jobName": "Create a ServiceNow Change Request"}'
