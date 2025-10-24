@@ -75,7 +75,7 @@ jobs:
           echo "$content" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           
-  create:
+  change:
     name: Create a ServiceNow Change Request
     needs: initialize
     # The type of runner that the job will run on
@@ -111,4 +111,13 @@ jobs:
           # start_date: This is the planned start date
           # end_date: This is the planned end date
           # For deployment gate based change, uncomment the 'deployment-gate' configuration and the 'deploy' step 
-          deployment-gate: '{"environment": "deployment_gate_sn_test", "jobName": "Create a ServiceNow Change Request"}'
+          deployment-gate: '{"environment": "deployment_gate_sn_test", "jobName": "Deploy"}'
+
+  deploy:
+    name: Deploy
+    needs: change
+    runs-on: ubuntu-latest
+    environment: deployment_gate_sn_test
+    steps:
+      - name: Finish last steps
+        run: echo "Done."
