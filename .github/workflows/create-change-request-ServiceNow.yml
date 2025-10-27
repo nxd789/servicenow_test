@@ -59,7 +59,7 @@ jobs:
 
           href_value=\\\"$PR_LINK\\\"
           target_value=\\\"_blank\\\"
-          content+="<b>Pull request <a href=href_value target=target_value>#$PR_NUMBER</a> has been made.</b><br>"
+          content+="<b>Pull request <a href=href_value target=target_value>#$PR_NUMBER</a> was opened.</b><br>"
           content+="<pre>"    # Read extra spaces as-is
 
           for idx in "${!labels[@]}"; do
