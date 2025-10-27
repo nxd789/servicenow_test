@@ -80,7 +80,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest # sw-ubuntu-latest
     outputs: 
-      chg_number: ${{ steps.create.outputs.change_request_number }}
+      chg_number: ${{ steps.create.outputs.change-request-number }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps: 
       # TODO: Get some details of the ticket (e.g., requester on the HRC case) and copy them to the CHG record
