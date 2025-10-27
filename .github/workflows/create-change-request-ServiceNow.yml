@@ -115,6 +115,9 @@ jobs:
           # For deployment gate based change, uncomment the 'deployment-gate' configuration and the 'deploy' step 
           # deployment-gate: '{"environment": "deployment_gate_sn_test", "jobName": "Deploy"}'
 
+      - name: testing_temporary
+        run: echo "Hello, ${{ needs.change.outputs.chg_number }}"
+
   # approve:
   #   name: Approve
   #   needs: change
