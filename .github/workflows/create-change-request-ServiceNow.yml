@@ -15,8 +15,6 @@ jobs:
     outputs:
       ticket_num: ${{ steps.get_ticket_num.outputs.ticket_num }}
       branch_name: ${{ steps.get_ticket_num.outputs.branch_name }}
-      #pr_number: ${{ steps.get_pr_details.outputs.pr_number }}
-      #pr_link: ${{ steps.get_pr_details.outputs.pr_link }}
       message: ${{ steps.prepare_work_notes_msg.outputs.message }}
     steps:
       - name: Get Ticket Number From Branch Name
@@ -37,8 +35,8 @@ jobs:
         id: get_pr_details
         run: |
           pr_number=${{ github.event.number }}
-          echo "pr_number=$pr_number" >> $GITHUB_ENV
-          echo "pr_link=${{ github.server_url }}/${{ github.repository }}/pull/$pr_number" >> $GITHUB_ENV
+          echo "PR_NUMBER=$pr_number" >> $GITHUB_ENV
+          echo "PR_LINK=${{ github.server_url }}/${{ github.repository }}/pull/$pr_number" >> $GITHUB_ENV
 
       - name: Prepare Work Notes Message
         id: prepare_work_notes_msg
@@ -59,8 +57,9 @@ jobs:
           # Format message
           content="[code]"
 
-          url="<a href=$pr_link>"
-          content+="<b>A pull request (<a href=\\\"$pr_link\\\" target=\\\"_blank\\\">#$pr_number</a>) has been made.</b><br>"
+          href_value=\\\"$PR_LINK\\\"
+          target_value=\\\"_blank\\\"
+          content+="<b>Pull request <a href=href_value target=target_value>#$PR_NUMBER</a> has been made.</b><br>"
           content+="<pre>"    # Read extra spaces as-is
 
           for idx in "${!labels[@]}"; do
