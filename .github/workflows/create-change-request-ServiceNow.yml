@@ -110,22 +110,22 @@ jobs:
           # start_date: This is the planned start date
           # end_date: This is the planned end date
           # For deployment gate based change, uncomment the 'deployment-gate' configuration and the 'deploy' step 
-          #deployment-gate: '{"environment": "deployment_gate_sn_test", "jobName": "Deploy"}'
+          deployment-gate: '{"environment": "deployment_gate_sn_test", "jobName": "Deploy"}'
 
-  approve:
-    name: Approve
-    needs: change
-    runs-on: ubuntu-latest
-    environment: deployment_gate_sn_test
-    steps:
-      - name: Test Approve
-        run: echo "Approved ${{ needs.change.outputs.change_request_number }}..."
-
-  # deploy:
-  #   name: Deploy
+  # approve:
+  #   name: Approve
   #   needs: change
   #   runs-on: ubuntu-latest
   #   environment: deployment_gate_sn_test
   #   steps:
-  #     - name: Finish last steps
-  #       run: echo "Done." # TODO: print the change request number
+  #     - name: Test Approve
+  #       run: echo "Approved ${{ needs.change.outputs.change_request_number }}..."
+
+  deploy:
+    name: Deploy
+    needs: change
+    runs-on: ubuntu-latest
+    environment: deployment_gate_sn_test
+    steps:
+      - name: Finish last steps
+        run: echo "Done." # TODO: print the change request number
