@@ -118,14 +118,14 @@ jobs:
       # - name: testing_temporary
       #   run: echo "Hello, ${{ steps.create.outputs.change-request-number }}"
 
-  # approve:
-  #   name: Approve
-  #   needs: change
-  #   runs-on: ubuntu-latest
-  #   environment: deployment_gate_sn_test
-  #   steps:
-  #     - name: Test Approve
-  #       run: echo "Approved ${{ needs.change.outputs.change_request_number }}..."
+  approve:
+    name: Approve
+    needs: change
+    runs-on: ubuntu-latest
+    environment: deployment_gate_sn_test
+    steps:
+      - name: Test Approve
+        run: echo "Approved |${{ needs.change.outputs.chg_number }}|..."
 
   deploy:
     name: Deploy
@@ -134,4 +134,4 @@ jobs:
     environment: deployment_gate_sn_test
     steps:
       - name: Finish last steps
-        run: echo "Done. ${{ needs.change.outputs.chg_number }}" # TODO: print the change request number
+        run: echo "Done. |${{ needs.change.outputs.chg_number }}|" # TODO: print the change request number
