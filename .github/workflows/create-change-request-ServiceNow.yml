@@ -113,7 +113,7 @@ jobs:
           # start_date: This is the planned start date
           # end_date: This is the planned end date
           # For deployment gate based change, uncomment the 'deployment-gate' configuration and the 'deploy' step 
-          deployment-gate: '{"environment": "deployment_gate_sn_test", "jobName": "Deploy"}'
+          # deployment-gate: '{"environment": "deployment_gate_sn_test", "jobName": "Deploy"}'
 
       # - name: testing_temporary
       #   run: echo "Hello, ${{ steps.create.outputs.change-request-number }}"
@@ -134,4 +134,4 @@ jobs:
     environment: deployment_gate_sn_test
     steps:
       - name: Finish last steps
-        run: echo "Done. |${{ needs.change.outputs.chg_number }}|" # TODO: print the change request number
+        run: echo "Done. ${{ needs.change.outputs.chg_number }}" # TODO: print the change request number
