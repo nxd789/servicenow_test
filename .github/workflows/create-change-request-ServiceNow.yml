@@ -146,12 +146,12 @@ jobs:
           tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
           context-github: ${{ toJSON(github) }}
           change-request-number: "${{ steps.get_change.outputs.change-request-number }}"
-          change-request-details: '{
-            "approval": "approved"
-            }'
 
-      # - name: Finish last steps
-      #   run: echo "Done. ${{ steps.get_change.outputs.change-request-number }}" # TODO: print the change request number
+          # Check if approver rejected or approved this deployment. Right now it doesn't check
+          change-request-details: '{
+            "approval": "approved",
+            "work_notes": "Deployment was approved by someone..."
+            }'
 
   # approve:
   #   name: Approve
