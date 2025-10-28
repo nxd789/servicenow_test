@@ -105,7 +105,8 @@ jobs:
             "attributes":{
               "short_description": "${{ needs.initialize.outputs.branch_name }}",
               "description": "Automatically created by GitHub Action in response to a new branch being created. TODO: Associate branch to service or something",
-              "work_notes": "${{ needs.initialize.outputs.message }}"
+              "work_notes": "${{ needs.initialize.outputs.message }}",
+              "assignment_group": "9c47b39a83f07a1060e51cb6feaad373"
               }
             }'
           # You can specify the requested_by attribute either with name or sys_id. Example: "requested_by":{"name": "Test User"} or "requested_by": "62826bf03710200044e0bfc8bcbe5df1"
