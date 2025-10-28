@@ -172,7 +172,7 @@ jobs:
           change-details: '{
             "build_number": "${{ github.run_id }}",
             "pipeline_name": "${{ github.repository }}/${{ github.workflow }}",
-            "stage_name": "Create a ServiceNow Change Request Payload",
+            "stage_name": "Create a ServiceNow Change Request Payload"
             }'
 
       - name: Test Output
