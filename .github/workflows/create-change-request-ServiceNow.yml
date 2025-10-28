@@ -116,7 +116,7 @@ jobs:
           # start_date: This is the planned start date
           # end_date: This is the planned end date
           # For deployment gate based change, uncomment the 'deployment-gate' configuration and the 'deploy' step 
-          deployment-gate: '{"environment": "deployment_gate_sn_test", "jobName": "Deploy"}'
+          # deployment-gate: '{"environment": "deployment_gate_sn_test", "jobName": "Deploy"}'
 
   deploy: # approve; change name later
     name: Deploy
