@@ -114,18 +114,6 @@ jobs:
           # For deployment gate based change, uncomment the 'deployment-gate' configuration and the 'deploy' step 
           deployment-gate: '{"environment": "deployment_gate_sn_test", "jobName": "Deploy"}'
 
-      # - name: testing_temporary
-      #   run: echo "Hello, ${{ steps.create.outputs.change-request-number }}"
-
-  # approve:
-  #   name: Approve
-  #   needs: change
-  #   runs-on: ubuntu-latest
-  #   environment: deployment_gate_sn_test
-  #   steps:
-  #     - name: Test Approve
-  #       run: echo "Approved |${{ needs.change.outputs.chg_number }}|..."
-
   deploy: # approve; change name later
     name: Deploy
     needs: change
@@ -133,14 +121,12 @@ jobs:
     environment: deployment_gate_sn_test
     steps:
       - name: Finish last steps
-        run: echo "Done. ${{ needs.change.outputs.chg_number }}" # TODO: print the change request number
-        
-  # get_chg_number:
-  #   name: Get Change Number
+        run: echo "Done." #${{ needs.change.outputs.chg_number }}" # TODO: print the change request number
+
+  # approve:
+  #   name: Approve
   #   needs: deploy
   #   runs-on: ubuntu-latest
-  #   outputs:
-  #     chg_number: ${{ steps.get_change.outputs.change-request-number }}
   #   steps:
   #     - name: ServiceNow Get Change
   #       id: get_change
@@ -153,30 +139,11 @@ jobs:
   #         change-details: '{
   #           "build_number": "${{ github.run_id }}",
   #           "pipeline_name": "${{ github.repository }}/${{ github.workflow }}",
-  #           "stage_name": "Create a ServiceNow Change Request Payload",
+  #           "stage_name": "Create a ServiceNow Change Request Payload"
   #           }'
 
-  approve:
-    name: Approve
-    needs: deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: ServiceNow Get Change
-        id: get_change
-        uses: ServiceNow/servicenow-devops-get-change@v5.1.0
-        with:
-          devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
-          instance-url: ${{ secrets.SN_INSTANCE_URL }}
-          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
-          context-github: ${{ toJSON(github) }}
-          change-details: '{
-            "build_number": "${{ github.run_id }}",
-            "pipeline_name": "${{ github.repository }}/${{ github.workflow }}",
-            "stage_name": "Create a ServiceNow Change Request Payload"
-            }'
-
-      - name: Test Output
-        run: echo "${{ steps.get_change.outputs.change-request-number }}"
+  #     - name: Test Output
+  #       run: echo "${{ steps.get_change.outputs.change-request-number }}"
 
       # - name: ServiceNow Update Change
       #   uses: ServiceNow/servicenow-devops-update-change@v5.1.0
