@@ -1,3 +1,7 @@
+# This assumes the deployment protection rule requires x number of approvers. This does not include the GitHub App that's
+# connected to the ServiceNow instance. May be better to just use a custom webhook, parse it through a custom Action in
+# flow designer, and go from there...
+
 name: Create DevOps Change Request in ServiceNow
 
 # Controls when the workflow will run
