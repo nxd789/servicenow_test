@@ -124,6 +124,20 @@ jobs:
     runs-on: ubuntu-latest
     environment: deployment_gate_sn_test
     steps:
+      - name: ServiceNow Get Change
+        id: get_change
+        uses: ServiceNow/servicenow-devops-get-change@v5.1.0
+        with:
+          devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
+          instance-url: ${{ secrets.SN_INSTANCE_URL }}
+          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+          context-github: ${{ toJSON(github) }}
+          change-details: '{
+            "build_number": "${{ github.run_id }}",
+            "pipeline_name": "${{ github.repository }}/${{ github.workflow }}",
+            "stage_name": "Deploy"
+            }'
+
       - name: Finish last steps
         run: echo "Done. ${{ needs.change.outputs.chg_number }}" # TODO: print the change request number
 
