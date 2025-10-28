@@ -116,7 +116,7 @@ jobs:
           # deployment-gate: '{"environment": "deployment_gate_sn_test", "jobName": "Deploy"}'
 
       - name: testing_temporary
-        run: echo "Hello, ${{ needs.change.outputs.chg_number }}"
+        run: echo "Hello, ${{ steps.create.outputs.chg_number }}"
 
   # approve:
   #   name: Approve
