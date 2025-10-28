@@ -139,7 +139,7 @@ jobs:
             }'
 
       - name: Finish last steps
-        run: echo "Done. ${{ needs.change.outputs.chg_number }}" # TODO: print the change request number
+        run: echo "Done. ${{ steps.get_change.outputs.change-request-number }}" # TODO: print the change request number
 
   # approve:
   #   name: Approve
