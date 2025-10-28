@@ -138,8 +138,20 @@ jobs:
             "stage_name": "Deploy"
             }'
 
-      - name: Finish last steps
-        run: echo "Done. ${{ steps.get_change.outputs.change-request-number }}" # TODO: print the change request number
+      - name: ServiceNow Update Change
+        uses: ServiceNow/servicenow-devops-update-change@v5.1.0
+        with:
+          devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
+          instance-url: ${{ secrets.SN_INSTANCE_URL }}
+          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+          context-github: ${{ toJSON(github) }}
+          change-request-number: "${{ steps.get_change.outputs.change-request-number }}"
+          change-request-details: '{
+            "approval": "approved"
+            }'
+
+      # - name: Finish last steps
+      #   run: echo "Done. ${{ steps.get_change.outputs.change-request-number }}" # TODO: print the change request number
 
   # approve:
   #   name: Approve
